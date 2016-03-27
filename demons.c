@@ -49,7 +49,6 @@ static void draw();
 
 Uint32 previousFrameTime;
 
-// TODO: wrap GetTicks on a helper
 Uint32 getDeltaTime()
 {
   Uint32 deltaTime = SDL_GetTicks() - previousFrameTime;
