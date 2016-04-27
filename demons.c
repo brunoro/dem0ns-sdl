@@ -6,6 +6,7 @@
 
 #include "display.h"
 #include "input.h"
+#include "gif_exporter.h"
 
 #define MIN(A,B) (A < B ? A : B)
 #define MAX(A,B) (A >= B ? A : B)
@@ -49,6 +50,7 @@ static void draw();
 
 Uint32 previousFrameTime;
 
+// TODO: wrap GetTicks on a helper
 Uint32 getDeltaTime()
 {
   Uint32 deltaTime = SDL_GetTicks() - previousFrameTime;
@@ -57,30 +59,32 @@ Uint32 getDeltaTime()
 
 void ram(void)
 {
-  Uint32 fps = 60;
+  Uint32 fps = 30;
   previousFrameTime = SDL_GetTicks();
 
-  num_states = MIN_NUM_STATES;
-  block_size = MIN_BLOCK_SIZE;
+  num_states = 14; // 6 // 7
+  block_size = 7; // 3
   stop = false;
 
-  reset();
-  draw();
-  handle_input();
-  step();
-  while (!stop)
-    {
-      Uint32 delta = getDeltaTime();
-      Uint32 min_delta = (1000 / fps);
-      if (delta > min_delta) // 
-	{
-	  draw();
-	  handle_input();
-	  step();
+  Uint32 min_delta = (1000 / fps);
 
-	  previousFrameTime = SDL_GetTicks();
-	}
+  reset();
+
+  gif_data gif = gif_init("hello.gif", RESX, RESY, num_states, min_delta);
+  while (!stop) {
+    Uint32 delta = getDeltaTime();
+    if (delta > min_delta) {
+      draw();
+      handle_input();
+      step();
+	  
+      gif_writeframe(gif, lcdGetBuffer());
+
+      previousFrameTime = SDL_GetTicks();
     }
+  }
+  
+  gif_close(gif);
 }
 
 void handle_input()
@@ -115,8 +119,7 @@ void reset()
 
   size_x = RESX / block_size;
   size_y = RESY / block_size;
-  printf("block_size: %u\n", block_size);
-  printf("%u, %u -> %u, %u\n", RESX, RESY, size_x, size_y);
+  printf("num_states: %u :: block_size %u\n", num_states, block_size);
 
   pad_x = (RESX - size_x * block_size) / 2;
   pad_y = (RESY - size_y * block_size) / 2;

@@ -84,3 +84,8 @@ void lcdDisplay()
   }
   SDL_Flip(screen);
 }
+
+uint8_t *lcdGetBuffer()
+{
+  return __buffer;
+}

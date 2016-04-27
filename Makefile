@@ -1,6 +1,6 @@
 CC=gcc
 DBG=cgdb
-LIBS=-lm -lSDL
+LIBS=-lm -lSDL -lgif 
 CFLAGS=-Wall -D_GNU_SOURCE=1 -D_REENTRANT -std=c99 -I/usr/include/SDL -g
 
 SRC=$(wildcard *.c)
