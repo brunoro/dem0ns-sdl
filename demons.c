@@ -11,8 +11,10 @@
 #define MAX(A,B) (A >= B ? A : B)
 #define BETWEEN(X,START,END) (MIN(MAX(X, START), END))
 
-#define MIN_NUM_STATES 4
-#define MAX_NUM_STATES 24
+//#define MIN_NUM_STATES 4
+//#define MAX_NUM_STATES 24
+#define MIN_NUM_STATES 2
+#define MAX_NUM_STATES 48
 
 #define NEXT_STATE(STATE) ((STATE + color_step) % max_color)
 #define RAND_COLOR ((rand() % num_states) * color_step)

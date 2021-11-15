@@ -19,6 +19,7 @@ int lcdInit()
 void lcdClose()
 {
   SDL_Quit();
+  return;
 }
 
 #define BYTETOBINARYPATTERN "%d%d%d%d%d%d%d%d"
